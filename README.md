@@ -91,7 +91,7 @@
 	run;
 
 # Association / Regression
-## Correlation
+## correlation
 	ods rtf file = "Correlations.rtf";
 	proc corr data = wu.release spearman pearson;
 		var DrugAmount
