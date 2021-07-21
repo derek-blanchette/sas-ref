@@ -1,5 +1,5 @@
 
-# ~Graphics
+# *Graphics
 ## sgplot
 	Title1 "PABA Dissolution";
 	Title2 "Identified by Drug Type";
