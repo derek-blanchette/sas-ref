@@ -90,7 +90,7 @@
 		keep ID baselinedate;
 	run;
 
-# Association
+# Association / Regression
 ## Correlation
 	ods rtf file = "Correlations.rtf";
 	proc corr data = wu.release spearman pearson;
@@ -106,9 +106,6 @@
 	run;
 	ods rtf close;
 
-
-
-# Regression
 ## anova
 	proc glm data=j.auc;
 		title1 "ANOVA on P. ging";
