@@ -45,18 +45,6 @@
 	run;
 
 
-
-# Rater Reliability
-## kappa
-	proc freq data=twotrials;
-		by rater;
-		tables Q2*Z2 / agree;
-		exact agree;
-	run;
-
-
-
-
 # Data Manipulation
 
 ## import Excel file
@@ -88,6 +76,27 @@
 		baselinedate = exdate;
 		if first.id then output;
 		keep ID baselinedate;
+	run;
+
+#  Summary Statistics
+## freq
+	proc freq data=j.corr3;
+		where spearman < -0.8;
+		table filename;
+	run;
+
+## means
+	proc means data=j.smoothed_both_labeled_stopage noprint;
+		where  6 <= min <= 12;
+		by id  exdate;
+		var hrmed5;
+		output out=j.HRmeds6_12 median=HRSession612;
+	run;
+
+## univariate
+	proc univariate data=compiled.smoothed_both;
+		var resetsHR resetsSPD;
+		histogram;
 	run;
 
 # Association / Regression
@@ -130,39 +139,6 @@
 	run;
 
 
-# Nonlinear Modeling
-## nlin
-### 4 Parameter Logistic Model
-	*Fits the nonlinear model to each of the cytokines;
-	*4 Parameter Logistic Model;
-	proc nlin data=cyto.logstandards  MAXITER=1000;
-		where cyto in ("IL-5", "IP-10", "MIP-1b");
-		by plate cyto;
-		parms Max = 4 Min = 0 EC50 = 2.2 Hill = 1;
-		model logMFI = Max + (Min - Max) / (1 + (logConc / EC50)**Hill);
-	run;
-
-#  Summary Statistics
-## freq
-	proc freq data=j.corr3;
-		where spearman < -0.8;
-		table filename;
-	run;
-
-## means
-	proc means data=j.smoothed_both_labeled_stopage noprint;
-		where  6 <= min <= 12;
-		by id  exdate;
-		var hrmed5;
-		output out=j.HRmeds6_12 median=HRSession612;
-	run;
-
-## univariate
-	proc univariate data=compiled.smoothed_both;
-		var resetsHR resetsSPD;
-		histogram;
-	run;
-
 # Nonparametrics
 ## Wilcoxon Rank Sum Test (2 groups)
 	proc npar1way wilcoxon;
@@ -176,6 +152,30 @@
 		class main_type;
 		var HNP_1_95 HNP_2_95 HNP_3_95 HBD_2_95 HBD_3_95 LL_37_95;
 		title3 "Comparison of viability by group";
+	run;
+
+
+
+# Nonlinear Modeling
+## nlin
+### 4 Parameter Logistic Model
+	*Fits the nonlinear model to each of the cytokines;
+	*4 Parameter Logistic Model;
+	proc nlin data=cyto.logstandards  MAXITER=1000;
+		where cyto in ("IL-5", "IP-10", "MIP-1b");
+		by plate cyto;
+		parms Max = 4 Min = 0 EC50 = 2.2 Hill = 1;
+		model logMFI = Max + (Min - Max) / (1 + (logConc / EC50)**Hill);
+	run;
+
+
+
+# Rater Reliability
+## kappa
+	proc freq data=twotrials;
+		by rater;
+		tables Q2*Z2 / agree;
+		exact agree;
 	run;
 
 
