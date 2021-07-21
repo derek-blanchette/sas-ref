@@ -1,5 +1,5 @@
 
-# *Graphics
+# 1. Graphics
 ## sgplot
 	Title1 "PABA Dissolution";
 	Title2 "Identified by Drug Type";
@@ -45,7 +45,7 @@
 	run;
 
 
-# Data Manipulation
+# 2. Data Manipulation
 
 ## import Excel file
 	PROC IMPORT OUT= J.V3 
@@ -78,7 +78,7 @@
 		keep ID baselinedate;
 	run;
 
-#  Summary Statistics
+#  3. Summary Statistics
 ## freq
 	proc freq data=j.corr3;
 		where spearman < -0.8;
@@ -99,7 +99,7 @@
 		histogram;
 	run;
 
-# Association / Regression
+# 4. Association / Regression
 ## correlation
 	ods rtf file = "Correlations.rtf";
 	proc corr data = wu.release spearman pearson;
@@ -139,7 +139,7 @@
 	run;
 
 
-# Nonparametrics
+# 5. Nonparametrics
 ## Wilcoxon Rank Sum Test (2 groups)
 	proc npar1way wilcoxon;
 		class caries;
@@ -156,7 +156,7 @@
 
 
 
-# Nonlinear Modeling
+# 6. Nonlinear Modeling
 ## nlin
 ### 4 Parameter Logistic Model
 	*Fits the nonlinear model to each of the cytokines;
@@ -170,7 +170,7 @@
 
 
 
-# Rater Reliability
+# 7. Rater Reliability
 ## kappa
 	proc freq data=twotrials;
 		by rater;
@@ -179,7 +179,7 @@
 	run;
 
 
-# SAS Macro
+# 8. SAS Macro
 ## simple example
 	options mprint;
 	%MACRO pulloutsubjects();
@@ -200,7 +200,7 @@
 	%let subject = 01;
 	%pulloutsubjects();
 
-# Miscellaneous 
+# 9. Miscellaneous 
 ## orthogonal polynomial coefficients
 	proc iml;
 		x={0 0.30103 0.47712125 0.60205999 0.69897 0.77815125};
