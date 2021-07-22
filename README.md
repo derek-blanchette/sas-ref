@@ -155,8 +155,35 @@
 	run;
 
 
+# 6. Power & Sample Size
+## proc glmpower
+	  data Exemplary;
+	      do Variety = 1 to 2;
+		 do Exposure = 1 to 7;
+		    input Height @@;
+		    output;
+		 end;
+	      end;
+	      datalines;
+		   0.000	 1.500	 1.500	 1.500	 1.500	 1.500	 3.000
+		   8.180	 9.680	 9.680	 9.680	 9.680	 9.680	11.180
+	      ;
+	   run;
 
-# 6. Nonlinear Modeling
+	*Equal allocation for 6 cell means;
+	proc glmpower data=Exemplary;
+	      class Variety Exposure;
+	      model Height = Variety Exposure Variety * Exposure;
+	      power
+			 alpha = 0.05
+		 stddev = 3.1
+		 ntotal = 224
+		 power  = .;
+		  plot x = n min = 80 max = 224;
+	run;
+
+
+# 7. Nonlinear Modeling
 ## nlin
 ### 4 Parameter Logistic Model
 	*Fits the nonlinear model to each of the cytokines;
@@ -170,7 +197,7 @@
 
 
 
-# 7. Rater Reliability
+# 8. Rater Reliability
 ## kappa
 	proc freq data=twotrials;
 		by rater;
@@ -179,7 +206,7 @@
 	run;
 
 
-# 8. SAS Macro
+# 9. SAS Macro
 ## simple example
 	options mprint;
 	%MACRO pulloutsubjects();
@@ -200,7 +227,7 @@
 	%let subject = 01;
 	%pulloutsubjects();
 
-# 9. Miscellaneous 
+# 10. Miscellaneous 
 ## orthogonal polynomial coefficients
 	proc iml;
 		x={0 0.30103 0.47712125 0.60205999 0.69897 0.77815125};
